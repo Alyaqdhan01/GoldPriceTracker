@@ -1,0 +1,84 @@
+
+<div>
+  <!-- Section heading -->
+  <div class="mb-8">
+    <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+      {{ language.t('historyTitle') }}
+    </h2>
+
+    <p class="mt-2 text-gray-600 dark:text-gray-400">
+      {{ language.t('historyDescription') }}
+    </p>
+  </div>
+
+  <!-- Loading state -->
+  @if (loading) {
+    <p class="py-8 text-center text-gray-600 dark:text-gray-400">
+      Loading price history...
+    </p>
+  }
+
+  <!-- Error state -->
+  @else if (errorMessage) {
+    <p class="py-8 text-center text-red-600 dark:text-red-400">
+      {{ errorMessage }}
+    </p>
+  }
+
+  <!-- History table -->
+  @else if (history.length > 0) {
+    <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-700">
+      <table class="w-full min-w-[650px] text-left text-sm">
+        <thead class="bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+          <tr>
+            <th class="px-6 py-4 font-semibold">
+              {{ language.t('date') }}
+            </th>
+
+            <th class="px-6 py-4 font-semibold">18K</th>
+            <th class="px-6 py-4 font-semibold">21K</th>
+            <th class="px-6 py-4 font-semibold">22K</th>
+            <th class="px-6 py-4 font-semibold">24K</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (day of history; track day.date; let i = $index) {
+            <tr
+              [class.bg-gray-50]="i % 2 !== 0"
+              [class.dark:bg-gray-700]="i % 2 !== 0"
+              class="border-b border-gray-200 text-gray-700 dark:border-gray-600 dark:text-gray-300"
+            >
+              <td class="whitespace-nowrap px-6 py-4">
+                {{ day.date }}
+              </td>
+
+              <td class="px-6 py-4">
+                {{ day.price18.toFixed(3) }}
+              </td>
+
+              <td class="px-6 py-4">
+                {{ day.price21.toFixed(3) }}
+              </td>
+
+              <td class="px-6 py-4">
+                {{ day.price22.toFixed(3) }}
+              </td>
+
+              <td class="px-6 py-4 font-semibold text-amber-600 dark:text-amber-400">
+                {{ day.price24.toFixed(3) }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- Empty history -->
+  @else {
+    <p class="py-8 text-center text-gray-600 dark:text-gray-400">
+      No price history is available.
+    </p>
+  }
+</div>
